@@ -1,0 +1,54 @@
+{
+  "query": {
+    "ota": "name",
+    "location": "name",
+    "hotel": "name",
+    "checkin": "yyyy-mm-dd",
+    "checkout": "yyyy-mm-dd",
+    "url": "https://…"
+  },
+  "deals": [
+    {
+      "name": "King Evolution Rm",
+      "price": "190",
+      "cancellation": "",
+      "currency": "$"
+    },
+    {
+      "name": "King Evolution Rm",
+      "price": "191",
+      "cancellation": "",
+      "currency": "$"
+    },
+    {
+      "name": "Room, 1 King Bed, Accessible, Bathtub",
+      "price": "190",
+      "cancellation": "",
+      "currency": "$"
+    },
+    {
+      "name": "Room, 1 King Bed, Accessible (Roll-In Shower)",
+      "price": "190",
+      "cancellation": "",
+      "currency": "$"
+    },
+    {
+      "name": "Room, 1 King Bed, Non Smoking",
+      "price": "200",
+      "cancellation": "",
+      "currency": "$"
+    },
+    {
+      "name": "Room, 1 King Bed, Non Smoking",
+      "price": "201",
+      "cancellation": "",
+      "currency": "$"
+    },
+    {
+      "name": "Room, 1 King Bed, Accessible, Corner (Roll-In Shower)",
+      "price": "200",
+      "cancellation": "",
+      "currency": "$"
+    }
+  ]
+}

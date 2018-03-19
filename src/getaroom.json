@@ -1,0 +1,108 @@
+{
+  "query": {
+    "ota": "name",
+    "location": "name",
+    "hotel": "name",
+    "checkin": "yyyy-mm-dd",
+    "checkout": "yyyy-mm-dd",
+    "url": "https://…"
+  },
+  "deals": [
+    {
+      "name": "Luxury - 1 King Suite ",
+      "price": "1,133.96",
+      "currency": "₪",
+      "cancellation": "Free Cancellation"
+    },
+    {
+      "name": "Bella - 2 Queen Suite ",
+      "price": "1,221.37",
+      "currency": "₪",
+      "cancellation": "Free Cancellation"
+    },
+    {
+      "name": "Luxury - 1 King View Suite ",
+      "price": "1,250.55",
+      "currency": "₪",
+      "cancellation": "Free Cancellation"
+    },
+    {
+      "name": "Luxury - 1 King Suite",
+      "price": "1,334.02",
+      "currency": "₪",
+      "cancellation": "Free Cancellation"
+    },
+    {
+      "name": "Bella - 2 Queens View Suite ",
+      "price": "1,337.97",
+      "currency": "₪",
+      "cancellation": "Free Cancellation"
+    },
+    {
+      "name": "Bella - 2 Queen Suite",
+      "price": "1,436.91",
+      "currency": "₪",
+      "cancellation": "Free Cancellation"
+    },
+    {
+      "name": "Luxury - 1 King View Suite",
+      "price": "1,471.20",
+      "currency": "₪",
+      "cancellation": "Free Cancellation"
+    },
+    {
+      "name": "Rialto - 2 Queens Suite ",
+      "price": "1,571.17",
+      "currency": "₪",
+      "cancellation": "Free Cancellation"
+    },
+    {
+      "name": "Bella - 2 Queens View Suite",
+      "price": "1,574.08",
+      "currency": "₪",
+      "cancellation": "Free Cancellation"
+    },
+    {
+      "name": "Rialto - 2 Queens View Suite ",
+      "price": "1,687.76",
+      "currency": "₪",
+      "cancellation": "Free Cancellation"
+    },
+    {
+      "name": "Piazza - 1 King View Suite ",
+      "price": "1,687.76",
+      "currency": "₪",
+      "cancellation": "Free Cancellation"
+    },
+    {
+      "name": "Rialto - 2 Queens Suite",
+      "price": "1,848.43",
+      "currency": "₪",
+      "cancellation": "Free Cancellation"
+    },
+    {
+      "name": "Prima Suite ",
+      "price": "1,862.66",
+      "currency": "₪",
+      "cancellation": "Free Cancellation"
+    },
+    {
+      "name": "Rialto - 2 Queens View Suite",
+      "price": "1,985.61",
+      "currency": "₪",
+      "cancellation": "Free Cancellation"
+    },
+    {
+      "name": "Piazza - 1 King View Suite",
+      "price": "1,985.61",
+      "currency": "₪",
+      "cancellation": "Free Cancellation"
+    },
+    {
+      "name": "Prima Suite",
+      "price": "2,191.37",
+      "currency": "₪",
+      "cancellation": "Free Cancellation"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "query": {
+    "ota": "name",
+    "location": "name",
+    "hotel": "name",
+    "checkin": "yyyy-mm-dd",
+    "checkout": "yyyy-mm-dd",
+    "url": "https://…"
+  },
+  "deals": [
+    {
+      "name": "Luxury 1 King Suite",
+      "price": "269",
+      "currency": "$",
+      "cancellation": "Non-Refundable"
+    },
+    {
+      "name": "Luxury 1 King Suite",
+      "price": "269",
+      "currency": "$",
+      "cancellation": "Non-Refundable"
+    },
+    {
+      "name": "Bella 2 Queens Suite",
+      "price": "299",
+      "currency": "$",
+      "cancellation": "Non-Refundable"
+    },
+    {
+      "name": "Bella 2 Queens Suite",
+      "price": "299",
+      "currency": "$",
+      "cancellation": "Non-Refundable"
+    },
+    {
+      "name": "Luxury 1 King View Suite",
+      "price": "309",
+      "currency": "$",
+      "cancellation": "Non-Refundable"
+    },
+    {
+      "name": "Luxury 1 King View Suite",
+      "price": "309",
+      "currency": "$",
+      "cancellation": "Non-Refundable"
+    },
+    {
+      "name": "Piazza View Suite",
+      "price": "459",
+      "currency": "$",
+      "cancellation": "Non-Refundable"
+    },
+    {
+      "name": "Rialto View Suite",
+      "price": "459",
+      "currency": "$",
+      "cancellation": "Non-Refundable"
+    }
+  ]
+}
