@@ -1,10 +1,10 @@
+const dateFormat = require('dateformat');
+const inquirer = require('inquirer');
+const scraper = require('./src/scraper');
 
-let inquirer = require('inquirer');
 inquirer.registerPrompt('datetime', require('inquirer-datepicker-prompt'));
-let dateFormat = require('dateformat');
 
-
-let request = [
+const request = [
   {
     type: 'input',
     name: 'city',
@@ -44,20 +44,18 @@ let request = [
     name: 'providers',
     message: 'Choose provider(s)',
     choices: [
-      { name: 'All', checked: true },
-      'EAN',
-      'HOTELBEDS',
-      'AMADEUS',
-      'GTA',
-      'SMYROOMS',
-      'TOURICO',
-      'ROOMER',
-      'INNSTANT',
-      'EXTERNAL',
-      'PRICELINE',
-      'GETAROOM',
-      'RESTEL',
-      'PTC',
+      { name: 'expedia', value: 1, checked: true },
+      { name: 'orbitz', value: 2, checked: true },
+      { name: 'travelocity', value: 3, checked: true },
+      { name: 'cheaptickets', value: 4, checked: true },
+      { name: 'tripAdvisor', value: 7, checked: true },
+      { name: 'hotels', value: 8, checked: true },
+      { name: 'otel', value: 9, checked: true },
+      { name: 'booking', value: 10, checked: true },
+      { name: 'priceline', value: 11, checked: true },
+      { name: 'roomer', value: 12, checked: true },
+      { name: 'hotwire', value: 13, checked: true },
+      { name: 'getaroom', value: 14, checked: true },
     ],
     validate(answer) {
       if (answer.length < 1) {
@@ -67,7 +65,7 @@ let request = [
     },
   },
   {
-    type: 'checkbox',
+    type: 'list',
     name: 'adults',
     message: 'Number of adults',
     choices: [
@@ -87,7 +85,7 @@ let request = [
     },
   },
   {
-    type: 'checkbox',
+    type: 'list',
     name: 'children',
     message: 'Number of children',
     choices: [
@@ -109,26 +107,20 @@ let request = [
   },
 ];
 
-let startUrl = [];
-
-// let childrenAge = [];
 inquirer.prompt(request).then((response) => {
-  switch (response.providers) {
-    default: startUrl = ['Need to work with bulding links'];
-  }
-  let data = {
-    query: {
-      city: response.city,
-      hotel: response.hotel,
-      adults: response.adults,
-      children: response.children,
-      ages: 'Need to work on ages',
-      checkin: dateFormat(response.checkin, 'isoDate'),
-      checkout: dateFormat(response.checkout, 'isoDate'),
-      providers: response.providers,
-      urls: startUrl,
-    },
+  const options = {
+    city: response.city,
+    hotel: response.hotel,
+    adults: response.adults,
+    children: response.children,
+    ages: 'Need to work on ages',
+    checkin: dateFormat(response.checkin, 'isoDate'),
+    checkout: dateFormat(response.checkout, 'isoDate'),
+    providers: response.providers,
+    urls: 'Need to work on bulding links',
   };
-  console.log(data);
-});
 
+  console.log(options);
+
+  scraper.scrapeHotel(options);
+});

@@ -32,5 +32,3 @@ scrape().then((value) => {
   //     if(err) throw err;
   //   })
 });
-
-module.exports.scrape = scrape;
