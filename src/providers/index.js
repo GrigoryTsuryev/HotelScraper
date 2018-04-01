@@ -1,20 +1,24 @@
-const expedia = require('./expedia');
+// const expedia = require('./expedia');
 // const booking = require('./booking');
 // const getaroom = require('./getaroom');
-const hotels = require('./hotels');
-const orbitz = require('./orbitz');
+// const hotels = require('./hotels');
+// const orbitz = require('./orbitz');
+// const trip = require('./trip');
+const test = require('./test');
 
 module.exports = {
-  1: expedia,
-  2: orbitz,
+  // 1: expedia,
+  // 2: orbitz,
   // 3: travelocity,
   // 4: cheaptickets,
   // 7: tripAdvisor,
-  8: hotels,
+  // 8: hotels,
   // 9: otel,
   // 10: booking,
   // 11: priceline,
   // 12: roomer,
   // 13: hotwire,
   // 14: getaroom
+  15: test,
+  // 16: trip,
 };

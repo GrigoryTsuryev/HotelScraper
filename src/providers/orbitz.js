@@ -1,29 +1,66 @@
 const puppeteer = require('puppeteer');
+const rp = require('request-promise');
+const dateFormat = require('dateformat');
 
-module.exports = {
-  scrapeHotel() {
-    return new Promise(async (resolve, reject) => {
-      const browser = await puppeteer.launch({ headless: true });
-      const page = await browser.newPage();
-      let startURL = ('https://reservations.travelclick.com/74495?children=0&utm_content=copy1-old&dateout=04/28/2018&hotelid=74495&adults=2&datein=04/25/2018&rooms=1#/accommodation/room');
-      await page.goto(startURL);
-      await page.$('.AccommodationsGrid-card');
-      await page.waitFor(5000);
+function getHotelPageURL(options) {
+  let url = `https://suggest.expedia.com/api/v4/typeahead/${options.city}+${options.hotel}?client=Homepage&lob=HOTELS&locale=en_US&regiontype=2047&ab=&dest=true&maxresults=8&features=contextual_ta%7Cpostal_code%7Cta_hierarchy%7CaltRegion&personalize=true&format=json`;
+
+  return rp({ url, json: true })
+    .then((data) => {
+      let hotelID = data.sr
+        .find(s => s.hotelId).hotelId;
+      return `https://www.orbitz.com/h${hotelID}.Hotel-Information?adults=${options.adults}&children=${options.children}&chkin=${dateFormat(options.checkin, 'mm/dd/yyyy')}&chkout=${dateFormat(options.checkout, 'mm/dd/yyyy')}&exp_curr=USD`;
+    })
+    .catch((error) => {
+      throw new Error(error);
+    });
+}
+
+function scrapeHotel(options) {
+  return new Promise(async (resolve, reject) => {
+    const browser = await puppeteer.launch({ headless: true });
+    const page = await browser.newPage();
+    const startUrl = await getHotelPageURL(options);
+    try {
+      await page.goto(startUrl);
+    }
+    catch (e) {
+      await page.$('.room');
       const result = await page.evaluate(() => {
         const data = { deals: [] };
-        [...document.querySelectorAll('.AccommodationsGrid-card')].forEach((room) => {
-          data.deals.push({
-            provider: 'ORBITZ',
-            name: room.querySelector('.CardGrid-summary-title').innerText,
-            price: room.querySelector('.CardList-price-title').innerText.split('.')[0].trim().split(' ')[1],
-            currency: document.querySelector('.CardList-price-title').innerText.split('.')[0].trim().split(' ')[0],
-            cancellation: 'Not presented in provider',
-          });
+        [...document.querySelectorAll('.room:not(.first-room-featured)')].forEach((room) => {
+          const elmInfo = room.querySelector('.room-name');
+          let currencySymbols = {
+            $: 'USD',
+          };
+
+          if (elmInfo) {
+            [...room.querySelectorAll('.rate-plan')].forEach((rate) => {
+              data.deals.push({
+                providers: 'ORBITZ.com',
+                name: elmInfo.innerText,
+                price: rate.querySelector('.room-price-value').innerText.replace(/\D+/g, ''),
+                currency: currencySymbols[rate.querySelector('.room-price-value').innerText.replace(/[0-9,]/g, '')],
+                cancellation: rate.querySelector('.rate-policies').innerText.split('\n')[0],
+              });
+            });
+          }
         });
+
         return data;
       });
       browser.close();
+
+      result.deals = result.deals.map((d) => {
+        d.url = startUrl;
+        return d;
+      });
       resolve(result);
-    });
-  },
+    }
+  });
+}
+
+module.exports = {
+  scrapeHotel,
+  getHotelPageURL,
 };

@@ -1,37 +1,65 @@
 const puppeteer = require('puppeteer');
+const rp = require('request-promise');
+const dateFormat = require('dateformat');
+
+function getHotelPageURL(options) {
+  let url = `https://suggest.expedia.com/api/v4/typeahead/${options.city}+${options.hotel}?client=Homepage&lob=HOTELS&locale=en_US&regiontype=2047&ab=&dest=true&maxresults=8&features=contextual_ta%7Cpostal_code%7Cta_hierarchy%7CaltRegion&personalize=true&format=json`;
+
+  return rp({ url, json: true })
+    .then((data) => {
+      let hotelID = data.sr
+        .find(s => s.hotelId).hotelId;
+      return `https://www.expedia.com/h${hotelID}.Hotel-Information?adults=${options.adults}&children=${options.children}&chkin=${dateFormat(options.checkin, 'mm/dd/yyyy')}&chkout=${dateFormat(options.checkout, 'mm/dd/yyyy')}&exp_curr=USD`;
+    })
+    .catch((error) => {
+      throw new Error(error);
+    });
+}
+
+function scrapeHotel(options) {
+  return new Promise(async (resolve, reject) => {
+    const browser = await puppeteer.launch({ headless: true });
+    const page = await browser.newPage();
+    const startUrl = await getHotelPageURL(options);
+    try {
+      await page.goto(startUrl);
+    }
+    catch (e) {
+      await page.$('.room');
+      const result = await page.evaluate(() => {
+        const data = { deals: [] };
+        [...document.querySelectorAll('.room')].forEach((room) => {
+          const elmInfo = room.querySelector('.room-info');
+          let currencySymbols = {
+            $: 'USD',
+          };
+          if (elmInfo) {
+            [...room.querySelectorAll('.rate-plan')].forEach((rate) => {
+              data.deals.push({
+                provider: 'Expedia.com',
+                name: elmInfo.innerText.split('\n').splice(0, 1).join('\n'),
+                price: rate.querySelector('.room-price-value').innerText.replace(/\D+/g, ''),
+                currency: currencySymbols[document.querySelector('.price.link-to-rooms ').innerText.replace(/[0-9]/g, '')],
+                cancellation: rate.querySelector('.rate-policies').innerText.split('\n').splice(0, 1).join('\n'),
+              });
+            });
+          }
+        });
+        return data;
+      });
+      browser.close();
+
+      result.deals = result.deals.map((d) => {
+        d.url = startUrl;
+        return d;
+      });
+      resolve(result);
+    }
+  });
+}
 
 module.exports = {
-  scrapeHotel() {
-    return new Promise(async (resolve, reject) => {
-      const browser = await puppeteer.launch({ headless: true });
-      const page = await browser.newPage();
-      let startURL = ('https://www.expedia.com/New-York-Hotels-Hilton-Garden-Inn-Times-Square.h15987.Hotel-Information?adults=2&children=0&=undefined&chkin=04%2F17%2F2018&chkout=04%2F18%2F2018&swpToggleOn=false&daysInFuture=&stayLength=&ts=1521467424320');
-      try {
-        await page.goto(startURL);
-      }
-      catch (e) {
-        await page.$('span.room-price-value');
-        const result = await page.evaluate(() => {
-          const data = { deals: [] };
-          [...document.querySelectorAll('.room')].forEach((room) => {
-            const elmInfo = room.querySelector('.room-info');
-            if (elmInfo) {
-              [...room.querySelectorAll('.rate-plan')].forEach((rate) => {
-                data.deals.push({
-                  provider: 'Expedia',
-                  name: elmInfo.innerText.split('\n').splice(0, 1).join('\n'),
-                  price: rate.querySelector('.room-price-value').innerText.replace(/\D+/g, ''),
-                  currency: document.querySelector('.price.link-to-rooms ').innerText.replace(/[0-9]/g, ''),
-                  cancellation: rate.querySelector('.rate-policies').innerText.split('\n').splice(0, 1).join('\n'),
-                });
-              });
-            }
-          });
-          return data;
-        });
-        browser.close();
-        resolve(result);
-      }
-    });
-  },
+  scrapeHotel,
+  getHotelPageURL,
 };
+

@@ -56,6 +56,7 @@ const request = [
       { name: 'roomer', value: 12, checked: true },
       { name: 'hotwire', value: 13, checked: true },
       { name: 'getaroom', value: 14, checked: true },
+      { name: 'test', value: 15, checked: true },
     ],
     validate(answer) {
       if (answer.length < 1) {
@@ -65,42 +66,25 @@ const request = [
     },
   },
   {
-    type: 'list',
+    type: 'input',
     name: 'adults',
     message: 'Number of adults',
-    choices: [
-      '1',
-      {
-        name: '2',
-        checked: true,
-      },
-      '3',
-      '4',
-    ],
+    default: '2',
     validate(answer) {
       if (answer.length < 1 || answer.length >= 2) {
-        return 'Choose only one presented option.';
+        return 'Type the number of adults';
       }
       return true;
     },
   },
   {
-    type: 'list',
+    type: 'input',
     name: 'children',
     message: 'Number of children',
-    choices: [
-      {
-        name: '0',
-        checked: true,
-      },
-      '1',
-      '2',
-      '3',
-      '4',
-    ],
+    default: '0',
     validate(answer) {
       if (answer.length < 1) {
-        return 'Choose only one presented option.';
+        return 'Type the number of children.';
       }
       return true;
     },
@@ -117,10 +101,10 @@ inquirer.prompt(request).then((response) => {
     checkin: dateFormat(response.checkin, 'isoDate'),
     checkout: dateFormat(response.checkout, 'isoDate'),
     providers: response.providers,
-    urls: 'Need to work on bulding links',
   };
 
   console.log(options);
 
   scraper.scrapeHotel(options);
+  scraper.getHotelPageURL(options);
 });
